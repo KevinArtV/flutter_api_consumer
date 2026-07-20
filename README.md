@@ -6,7 +6,7 @@ El proyecto destaca por implementar una transición arquitectónica clara desde 
 
 ---
 
-## 🏗️ Transición de Arquitectura: Legacy vs. MVVM
+## Transición de Arquitectura: Legacy vs. MVVM
 
 El punto de entrada del sistema ([lib/main.dart](lib/main.dart)) incluye una bandera de configuración llamada `useNewVersion`. Esto permite alternar dinámicamente entre dos esquemas arquitectónicos para comparar la robustez de ambas soluciones:
 
@@ -19,7 +19,7 @@ El punto de entrada del sistema ([lib/main.dart](lib/main.dart)) incluye una ban
 
 ---
 
-## 📐 Diagrama de la Arquitectura MVVM (Nueva Versión)
+## Diagrama de la Arquitectura MVVM (Nueva Versión)
 
 El flujo de información en la nueva arquitectura es unidireccional y reactivo:
 
@@ -51,7 +51,7 @@ graph TD
 
 ---
 
-## 📂 Estructura de Directorios
+## Estructura de Directorios
 
 El código fuente en `lib/` está organizado bajo la estructura recomendada para proyectos escalables en Flutter:
 
@@ -86,7 +86,7 @@ lib/
 
 ---
 
-## 💻 Desglose de Componentes y Lógica
+## Desglose de Componentes y Lógica
 
 ### 1. Capa de Datos (Data Layer)
 
@@ -108,7 +108,7 @@ lib/
 
 ---
 
-## 🔌 Configuración y Conexión a Supabase
+## Configuración y Conexión a Supabase
 
 La aplicación se comunica directamente con las tablas de Supabase utilizando la API REST que este autogenera. La configuración se establece en las constantes de [lib/data/services/conductor_service.dart](lib/data/services/conductor_service.dart):
 
@@ -126,7 +126,7 @@ Supabase requiere autenticar cada petición HTTP a través de cabeceras. El serv
 
 ---
 
-## 🚀 Instalación y Uso
+## Instalación y Uso
 
 ### Prerrequisitos
 * Tener instalado el SDK de Flutter (versión `>=3.12.1`).
