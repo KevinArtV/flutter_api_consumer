@@ -6,53 +6,7 @@ El proyecto destaca por implementar una transición arquitectónica clara desde 
 
 ---
 
-## Transición de Arquitectura: Legacy vs. MVVM
-
-El punto de entrada del sistema ([lib/main.dart](lib/main.dart)) incluye una bandera de configuración llamada `useNewVersion`. Esto permite alternar dinámicamente entre dos esquemas arquitectónicos para comparar la robustez de ambas soluciones:
-
-1. **Versión Antigua (Legacy):**
-   * **Ubicación:** `lib/pages/` ([conductor_list.dart](lib/pages/conductor_list.dart) y [conductor_form.dart](lib/pages/conductor_form.dart)).
-   * **Características:** Arquitectura acoplada. Los widgets heredan de `StatefulWidget`, mezclando llamadas HTTP crudas a través de `ConductorService`, la mutación de estado con `setState` y la renderización visual en la misma clase. Dificulta las pruebas unitarias y reduce la escalabilidad.
-2. **Versión Nueva (Diseño Premium + MVVM):**
-   * **Ubicación:** `lib/data/` y `lib/ui/`.
-   * **Características:** Separación estricta de responsabilidades. La lógica de presentación y el estado están aislados en un **ViewModel** reactivo, las llamadas a APIs e integración de fuentes de datos se encapsulan en un **Repository**, y las vistas son componentes puramente visuales y declarativos.
-### Comparativa de Flujo Arquitectónico
-
-```mermaid
-graph TD
-    %% Estilos de nodos
-    classDef legacyNode fill:#ffd2d2,stroke:#d45d5d,stroke-width:1px,color:#601b1b;
-    classDef mvvmNode fill:#d2e4ff,stroke:#5d8fd4,stroke-width:1px,color:#1b3960;
-    classDef dbNode fill:#e2fcd4,stroke:#7bb55d,stroke-width:1px,color:#274d17;
-
-    subgraph Legacy_Arch ["Versión Antigua: Legacy (Acoplada)"]
-        direction TB
-        L_View["StatefulWidget (Vistas)\n- ConductorList\n- ConductorForm\n• Mezcla UI, Estado (setState) e HTTP"]:::legacyNode
-        L_Service["ConductorService\n• Configuración API rígida"]:::legacyNode
-        L_DB[("Supabase REST API")]:::dbNode
-
-        L_View <-->|Lógica de UI + Estado + HTTP Crudo| L_Service
-        L_Service <-->|Peticiones HTTP Directas| L_DB
-    end
-
-    subgraph MVVM_Arch ["Versión Nueva: MVVM (Desacoplada)"]
-        direction TB
-        M_View["Vistas (UI)\n- ConductorListView\n- ConductorFormView\n• Renderizado reactivo libre de lógica"]:::mvvmNode
-        M_VM["ViewModel\n- ConductorViewModel\n• Control de estado (ChangeNotifier)\n• Lógica de presentación"]:::mvvmNode
-        M_Repo["Repository\n- ConductorRepository\n• Proveedor de datos (Abstracción)"]:::mvvmNode
-        M_Service["Service\n- ConductorService\n• Cliente REST genérico"]:::mvvmNode
-        M_DB_New[("Supabase REST API")]:::dbNode
-
-        M_View <-->|Escucha Estado / Notifica Eventos| M_VM
-        M_VM <-->|CRUD Lógico| M_Repo
-        M_Repo <-->|Peticiones REST| M_Service
-        M_Service <-->|Peticiones HTTP| M_DB_New
-    end
-```
-
----
-
-## Diagrama de la Arquitectura MVVM (Nueva Versión)
+## Diagrama de la Arquitectura MVVM
 
 El flujo de información en la nueva arquitectura es unidireccional y reactivo:
 
