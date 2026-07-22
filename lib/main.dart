@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 // Nueva versión (Arquitectura limpia y MVVM)
 import 'data/repositories/conductor_repository.dart';
@@ -12,7 +13,10 @@ import 'pages/conductor_list.dart' as old;
 // Habilita 'true' para la nueva versión (Diseño Premium + MVVM), 'false' para la antigua
 const bool useNewVersion = true;
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
+
   if (useNewVersion) {
     final conductorRepository = ConductorRepository();
     final conductorViewModel = ConductorViewModel(conductorRepository: conductorRepository);

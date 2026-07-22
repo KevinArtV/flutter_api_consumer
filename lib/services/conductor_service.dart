@@ -1,17 +1,19 @@
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import '../models/conductor_model.dart';
 
 class ConductorService {
   // CONFIGURACIÓN DE SUPABASE REST API
-  // Reemplaza con tus credenciales de Supabase
-  static const String supabaseUrl = 'https://wmdhptmfyqkgpwvizlmx.supabase.co';
-  static const String anonKey = 'YOUR_SUPABASE_ANON_KEY';
-  static const String tableName = 'conductores'; // Nombre de tu tabla en Supabase
-  static const String dbSchema = 'public'; // Cambia si tu tabla está en un esquema diferente a public
+  // Obtenidos desde el archivo .env
+  static String get supabaseUrl => dotenv.env['SUPABASE_URL'] ?? '';
+  static String get apiKey => dotenv.env['SUPABASE_API_KEY'] ?? '';
+  static String get anonKey => apiKey;
+  
+  static const String tableName = 'conductores'; // Nombre de la tabla en Supabase
+  static const String dbSchema = 'public';
 
   static String get baseUrl {
-    // Si se incluye la ruta REST completa, limpiamos para evitar duplicados
     if (supabaseUrl.contains('/rest/v1')) {
       final base = supabaseUrl.split('/rest/v1')[0];
       return '$base/rest/v1/$tableName';
@@ -25,8 +27,8 @@ class ConductorService {
   static Map<String, String> get _headers {
     final headers = {
       'Content-Type': 'application/json; charset=UTF-8',
-      'apikey': anonKey,
-      'Authorization': 'Bearer $anonKey',
+      'apikey': apiKey,
+      'Authorization': 'Bearer $apiKey',
     };
     if (dbSchema != 'public') {
       headers['Accept-Profile'] = dbSchema;
@@ -47,10 +49,9 @@ class ConductorService {
     );
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body) as List<dynamic>;
-      return data.map((json) => ConductorModel.fromJson(
-        json as Map<String, dynamic>)).toList();
+      return data.map((json) => ConductorModel.fromJson(json as Map<String, dynamic>)).toList();
     } else {
-      throw Exception('Failed to load conductors: ${response.body}');
+      throw Exception('Failed to load conductors (${response.statusCode}): ${response.body}');
     }
   }
 
@@ -66,7 +67,7 @@ class ConductorService {
       }
       throw Exception('Conductor not found');
     } else {
-      throw Exception('Failed to load conductor: ${response.body}');
+      throw Exception('Failed to load conductor (${response.statusCode}): ${response.body}');
     }
   }
 
@@ -79,7 +80,7 @@ class ConductorService {
         'licencia_conducir': conductor.licenciaConducir,
         'telefono': conductor.telefono,
         'fecha_contratacion': conductor.fechaContratacion,
-        }),
+      }),
     );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
@@ -89,7 +90,7 @@ class ConductorService {
       }
       throw Exception('Failed to create conductor: Empty response body');
     } else {
-      throw Exception('Failed to create conductor: ${response.body}');
+      throw Exception('Failed to create conductor (${response.statusCode}): ${response.body}');
     }
   }
 
@@ -111,7 +112,7 @@ class ConductorService {
       }
       throw Exception('Failed to update conductor: Empty response body');
     } else {
-      throw Exception('Failed to update conductor: ${response.body}');
+      throw Exception('Failed to update conductor (${response.statusCode}): ${response.body}');
     }
   }
 
@@ -121,7 +122,7 @@ class ConductorService {
       headers: _headers,
     );
     if (!(response.statusCode == 200 || response.statusCode == 204)) {
-      throw Exception('Error: no se puede eliminar el conductor con id: $id (status code: ${response.statusCode})');
+      throw Exception('Error eliminando conductor id $id (status code: ${response.statusCode}): ${response.body}');
     }
   }
 }
