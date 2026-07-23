@@ -100,9 +100,9 @@ lib/
 La aplicación se comunica directamente con las tablas de Supabase utilizando la API REST que este autogenera. La configuración se establece en las constantes de [lib/data/services/conductor_service.dart](lib/data/services/conductor_service.dart):
 
 ```dart
-static const String supabaseUrl = 'https://wmdhptmfyqkgpwvizlmx.supabase.co/rest/v1/';
-static const String anonKey = 'YOUR_SUPABASE_ANON_KEY';
-static const String tableName = 'conductores';
+static String get supabaseUrl => dotenv.env['SUPABASE_URL'] ?? '';
+static String get apiKey => dotenv.env['SUPABASE_API_KEY'] ?? '';
+static String get anonKey => apiKey;
 ```
 
 ### Cabeceras HTTP Requeridas
@@ -129,3 +129,19 @@ Supabase requiere autenticar cada petición HTTP a través de cabeceras. El serv
    ```bash
    flutter run
    ```
+   
+## Capturas de pantalla
+<img width="558" height="1094" alt="image" src="https://github.com/user-attachments/assets/c6e19418-9bda-4234-9423-3106b7ab0eef" />
+<img width="561" height="1097" alt="image" src="https://github.com/user-attachments/assets/4057f521-c70c-471f-85fe-bc25e889cc5a" />
+<img width="564" height="1102" alt="image" src="https://github.com/user-attachments/assets/c5f7d060-aa90-44dd-bc7e-dbe7008280d3" />
+<img width="564" height="1104" alt="image" src="https://github.com/user-attachments/assets/073261d7-27ad-409c-b217-d6332da7c1b1" />
+<img width="561" height="1104" alt="image" src="https://github.com/user-attachments/assets/9b16eadc-e7bb-4866-aa54-17b004d7057d" />
+<img width="562" height="1101" alt="image" src="https://github.com/user-attachments/assets/07c60205-af79-4ec7-bef9-c23638669482" />
+<img width="565" height="1100" alt="image" src="https://github.com/user-attachments/assets/8a1a58e7-bca3-47da-afc9-a88b8c79b3e3" />
+
+
+
+
+
+
+
